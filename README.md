@@ -36,20 +36,20 @@ Every time you paste code into an LLM, send a document to an API, or build an ag
 pip install envaultx
 
 # With the Anthropic wrapper
-pip install "envault[anthropic]"
+pip install "envaultx[anthropic]"
 
 # With the OpenAI wrapper
-pip install "envault[openai]"
+pip install "envaultx[openai]"
 
 # With NLP-based PII detection (spaCy)
-pip install "envault[nlp]"
+pip install "envaultx[nlp]"
 python -m spacy download en_core_web_sm
 
 # With encrypted vault serialization
-pip install "envault[crypto]"
+pip install "envaultx[crypto]"
 
 # Everything
-pip install "envault[all]"
+pip install "envaultx[all]"
 ```
 
 **Requires Python 3.9+.**
@@ -262,7 +262,7 @@ Restored:         "The key sk-proj-abc123... has been rotated."
 - The vault lives only in memory — nothing is ever written to disk by envault itself
 - The same secret value always maps to the same placeholder within a session (deduplication)
 - Placeholders are typed and numbered: `[OPENAI_KEY_1]`, `[EMAIL_3]`, `[DB_PASSWORD_1]`
-- For cross-process use, serialize the vault to encrypted bytes (requires `envault[crypto]`):
+- For cross-process use, serialize the vault to encrypted bytes (requires `envaultx[crypto]`):
 
 ```python
 # Encrypt
