@@ -1,5 +1,9 @@
 # envault
 
+[![PyPI](https://img.shields.io/pypi/v/envaultx)](https://pypi.org/project/envaultx)
+[![Python](https://img.shields.io/pypi/pyversions/envaultx)](https://pypi.org/project/envaultx)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 > **What your LLM sees, stays safe.**
 
 Every time you paste code into an LLM, send a document to an API, or build an agent that reads files — there is a non-zero chance that API keys, database passwords, and personal data travel with the content. This happens constantly and mostly by accident.
@@ -29,7 +33,7 @@ Every time you paste code into an LLM, send a document to an API, or build an ag
 
 ```bash
 # Core library + CLI (no optional deps)
-pip install envault
+pip install envaultx
 
 # With the Anthropic wrapper
 pip install "envault[anthropic]"
@@ -231,7 +235,7 @@ Detects secrets that don't match known formats by computing Shannon entropy. Con
 
 ### Layer 3 — NLP / spaCy (opt-in)
 
-Enable with `nlp=True` or `--nlp` flag. Requires `pip install "envault[nlp]"`.
+Enable with `nlp=True` or `--nlp` flag. Requires `pip install "envaultx[nlp]"`.
 
 Detects PII in natural language prose: names in personal context, physical addresses, phone numbers and emails that Layer 1 misses due to non-standard formatting.
 
@@ -316,20 +320,6 @@ All values can be overridden with environment variables:
 - **Not a secrets manager** — use Vault, AWS Secrets Manager, etc. for production secret storage
 - **Not a git scanner** — use [TruffleHog](https://github.com/trufflesecurity/trufflehog) or [gitleaks](https://github.com/gitleaks/gitleaks) for history scanning
 - **Not a network proxy** — envault operates on text in your process, not at the network layer
-
----
-
-## Development
-
-```bash
-git clone https://github.com/pratiksonigra/envault
-cd envault
-pip install -e ".[dev,all]"
-pytest
-pytest --cov=envault --cov-report=term-missing
-```
-
-Tests are organized per module in `tests/`. Fixtures in `tests/fixtures/` cover clean samples, known-secret samples (with secrets at documented positions), and edge cases (Unicode, empty input, long lines).
 
 ---
 

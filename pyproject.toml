@@ -3,9 +3,25 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "envault"
+name = "envaultx"
 version = "0.1.0"
 description = "What your LLM sees, stays safe."
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Pratik Sonigra", email = "pratik.s@dashtechinc.com" }]
+keywords = ["llm", "security", "redaction", "pii", "secrets", "mcp", "ai"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Security",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
 requires-python = ">=3.9"
 dependencies = [
     "click>=8.0",
@@ -20,6 +36,13 @@ anthropic = ["anthropic>=0.30"]
 openai = ["openai>=1.0"]
 all = ["spacy>=3.7", "cryptography>=41.0", "anthropic>=0.30", "openai>=1.0"]
 dev = ["pytest>=7.0", "pytest-cov", "httpx"]
+
+[project.urls]
+Homepage = "https://pypi.org/project/envault"
+Repository = "https://github.com/pratik-sonigra/envault"
+
+[tool.hatch.build.targets.wheel]
+packages = ["envault"]
 
 [project.scripts]
 envault = "envault.cli:cli"
