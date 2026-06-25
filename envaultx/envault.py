@@ -17,7 +17,7 @@ class Envault:
     ) -> None:
         if llm_assist:
             raise NotImplementedError(
-                "llm_assist requires envault[llm] extra — not yet implemented in v1.0"
+                "llm_assist requires envaultx[llm] extra — not yet implemented in v1.0"
             )
         self._scanner = Scanner(nlp=nlp)
         self.threshold = threshold

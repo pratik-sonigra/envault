@@ -75,7 +75,7 @@ class Scanner:
                 self._nlp_model = spacy.load("en_core_web_sm")
             except ImportError:
                 raise ImportError(
-                    "NLP support requires spacy: pip install envault[nlp] && python -m spacy download en_core_web_sm"
+                    "NLP support requires spacy: pip install envaultx[nlp] && python -m spacy download en_core_web_sm"
                 )
 
     def _layer1(self, text: str) -> list[Detection]:

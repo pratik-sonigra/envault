@@ -78,7 +78,7 @@ def _format_scan_result(result, fmt: str, text: str) -> str:
 
 @click.group()
 def cli() -> None:
-    """envault — What your LLM sees, stays safe."""
+    """envaultx — What your LLM sees, stays safe."""
 
 
 @cli.command()
@@ -271,7 +271,7 @@ def patterns(category: str | None, fmt: str) -> None:
 @click.option("--transport", type=click.Choice(["stdio", "sse"]), default="stdio")
 @click.option("--port", type=int, default=8000)
 def mcp(transport: str, port: int) -> None:
-    """Start the envault MCP server."""
+    """Start the envaultx MCP server."""
     from .mcp_server import mcp as _mcp
     if transport == "sse":
         _mcp.run(transport="sse", port=port)

@@ -9,7 +9,7 @@ from mcp.server.fastmcp import FastMCP
 from .envault import Envault
 from .vault import Vault
 
-mcp = FastMCP("envault")
+mcp = FastMCP("envaultx")
 
 # session_id -> (envault, vault, created_at)
 _sessions: dict[str, tuple[Envault, Vault, float]] = {}

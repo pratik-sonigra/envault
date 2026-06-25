@@ -21,7 +21,7 @@ class AnthropicVault:
             import anthropic
         except ImportError:
             raise DependencyError(
-                "AnthropicVault requires anthropic: pip install envault[anthropic]"
+                "AnthropicVault requires anthropic: pip install envaultx[anthropic]"
             )
         self._client = anthropic.Anthropic(**anthropic_kwargs)
         self._ev = Envault(threshold=threshold, categories=categories, exclude_categories=exclude_categories)
@@ -75,7 +75,7 @@ class OpenAIVault:
             import openai
         except ImportError:
             raise DependencyError(
-                "OpenAIVault requires openai: pip install envault[openai]"
+                "OpenAIVault requires openai: pip install envaultx[openai]"
             )
         self._client = openai.OpenAI(**openai_kwargs)
         self._ev = Envault(threshold=threshold, categories=categories, exclude_categories=exclude_categories)

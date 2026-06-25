@@ -2,7 +2,7 @@
 Tests for MCP server tools — called directly without spinning up a server.
 """
 import pytest
-from envault.mcp_server import (
+from envaultx.mcp_server import (
     redact_text,
     scan_text,
     scan_external_content,

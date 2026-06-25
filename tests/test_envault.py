@@ -1,5 +1,5 @@
 import pytest
-from envault import Envault, Vault
+from envaultx import Envault, Vault
 
 
 def test_redact_postgres_url():

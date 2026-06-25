@@ -1,7 +1,7 @@
 import json
 import pytest
 from click.testing import CliRunner
-from envault.cli import cli
+from envaultx.cli import cli
 
 
 @pytest.fixture

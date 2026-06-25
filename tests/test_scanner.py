@@ -1,5 +1,5 @@
 import pytest
-from envault.scanner import Scanner
+from envaultx.scanner import Scanner
 
 
 @pytest.fixture

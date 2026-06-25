@@ -8,7 +8,7 @@ import pytest
 anthropic = pytest.importorskip("anthropic")
 
 from unittest.mock import MagicMock, patch
-from envault.wrappers import AnthropicVault
+from envaultx.wrappers import AnthropicVault
 
 
 def make_mock_response():
@@ -32,9 +32,9 @@ def test_anthropic_vault_redacts_user_message():
         wrapper = AnthropicVault.__new__(AnthropicVault)
         import anthropic as _anthropic
         wrapper._client = instance
-        from envault import Envault
+        from envaultx import Envault
         wrapper._ev = Envault()
-        from envault.wrappers import _AnthropicMessagesProxy
+        from envaultx.wrappers import _AnthropicMessagesProxy
         wrapper.messages = _AnthropicMessagesProxy(instance, wrapper._ev)
 
         secret_text = "My API key is sk-abcdefghijklmnopqrstuvwxyz1234567890"
@@ -50,9 +50,9 @@ def test_anthropic_vault_redacts_user_message():
 
 def test_anthropic_vault_vault_attached_to_response():
     """Response should have _vault attribute after call."""
-    from envault.wrappers import _AnthropicMessagesProxy
-    from envault import Envault
-    from envault.vault import Vault
+    from envaultx.wrappers import _AnthropicMessagesProxy
+    from envaultx import Envault
+    from envaultx.vault import Vault
 
     instance = MagicMock()
     instance.messages.create.return_value = make_mock_response()
@@ -69,8 +69,8 @@ def test_anthropic_vault_vault_attached_to_response():
 
 def test_anthropic_vault_non_user_messages_not_redacted():
     """System and assistant messages should pass through unchanged."""
-    from envault.wrappers import _AnthropicMessagesProxy
-    from envault import Envault
+    from envaultx.wrappers import _AnthropicMessagesProxy
+    from envaultx import Envault
 
     captured = {}
 
@@ -105,8 +105,8 @@ except ImportError:
 
 @pytest.mark.skipif(not HAS_OPENAI, reason="openai not installed")
 def test_openai_vault_redacts_user_message():
-    from envault.wrappers import _OpenAICompletionsProxy
-    from envault import Envault
+    from envaultx.wrappers import _OpenAICompletionsProxy
+    from envaultx import Envault
 
     captured = {}
 

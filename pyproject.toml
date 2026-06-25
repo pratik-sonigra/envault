@@ -38,11 +38,11 @@ all = ["spacy>=3.7", "cryptography>=41.0", "anthropic>=0.30", "openai>=1.0"]
 dev = ["pytest>=7.0", "pytest-cov", "httpx"]
 
 [project.urls]
-Homepage = "https://pypi.org/project/envault"
-Repository = "https://github.com/pratik-sonigra/envault"
+Homepage = "https://pypi.org/project/envaultx"
+Repository = "https://github.com/pratik-sonigra/envaultx"
 
 [tool.hatch.build.targets.wheel]
-packages = ["envault"]
+packages = ["envaultx"]
 
 [project.scripts]
-envault = "envault.cli:cli"
+envaultx = "envaultx.cli:cli"

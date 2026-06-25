@@ -1,5 +1,5 @@
 import pytest
-from envault.vault import Vault
+from envaultx.vault import Vault
 
 
 def test_add_creates_placeholder():

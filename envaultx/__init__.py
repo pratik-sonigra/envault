@@ -1,4 +1,4 @@
-"""envault — What your LLM sees, stays safe."""
+"""envaultx — What your LLM sees, stays safe."""
 
 from .envault import Envault
 from .vault import Vault

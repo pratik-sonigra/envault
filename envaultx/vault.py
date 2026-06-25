@@ -40,7 +40,7 @@ class Vault:
             import os
         except ImportError:
             raise DependencyError(
-                "Encryption requires the cryptography package: pip install envault[crypto]"
+                "Encryption requires the cryptography package: pip install envaultx[crypto]"
             )
         salt = os.urandom(16)
         kdf = PBKDF2HMAC(
@@ -65,7 +65,7 @@ class Vault:
             import base64
         except ImportError:
             raise DependencyError(
-                "Encryption requires the cryptography package: pip install envault[crypto]"
+                "Encryption requires the cryptography package: pip install envaultx[crypto]"
             )
         try:
             salt = data[:16]

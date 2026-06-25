@@ -1,4 +1,4 @@
-# envault
+# envaultx
 
 [![PyPI](https://img.shields.io/pypi/v/envaultx)](https://pypi.org/project/envaultx)
 [![Python](https://img.shields.io/pypi/pyversions/envaultx)](https://pypi.org/project/envaultx)
@@ -8,23 +8,23 @@
 
 Every time you paste code into an LLM, send a document to an API, or build an agent that reads files — there is a non-zero chance that API keys, database passwords, and personal data travel with the content. This happens constantly and mostly by accident.
 
-**envault** sits between your application and any LLM API. Before text leaves your system, it detects and redacts sensitive content — replacing secrets with typed, numbered placeholders stored in an ephemeral in-memory vault. The process is fully reversible: if you need original values back, the vault restores them.
+**envaultx** sits between your application and any LLM API. Before text leaves your system, it detects and redacts sensitive content — replacing secrets with typed, numbered placeholders stored in an ephemeral in-memory vault. The process is fully reversible: if you need original values back, the vault restores them.
 
 ```
 "postgres://admin:hunter2@prod.db.internal:5432/users"
-                           ↓ envault
+                           ↓ envaultx
 "postgres://[DB_USER_1]:[DB_PASSWORD_1]@[HOSTNAME_1]:5432/[DB_NAME_1]"
 ```
 
 ---
 
-## Why envault?
+## Why envaultx?
 
 - **Zero infrastructure** — pure Python, no external services, no database, no cloud dependency
 - **Reversible** — redaction is stateful; original values can be restored from the vault after the LLM responds
 - **Model-agnostic** — works with Anthropic, OpenAI, or any LLM SDK
 - **Layered detection** — fast regex patterns first, Shannon entropy heuristics second, optional spaCy NLP third
-- **Non-blocking** — envault informs and redacts; the caller decides what to do next
+- **Non-blocking** — envaultx informs and redacts; the caller decides what to do next
 - **Three surfaces** — use it as a Python library, a shell pipe, or an MCP server for agent pipelines
 
 ---
@@ -61,9 +61,9 @@ pip install "envaultx[all]"
 ### Python library
 
 ```python
-from envault import Envault
+from envaultx import envaultx
 
-ev = Envault()
+ev = envaultx()
 
 # Inspect what would be redacted — without modifying anything
 result = ev.scan("My key is sk-proj-abc123XYZdef456GHI789jkl012MN")
@@ -95,11 +95,11 @@ clean = ev.sanitize("Contact me at alice@example.com or +1-555-867-5309")
 
 ### Drop-in SDK wrappers
 
-Replace your existing Anthropic or OpenAI client with `AnthropicVault` / `OpenAIVault`. The API is identical — envault intercepts every message before it leaves your process.
+Replace your existing Anthropic or OpenAI client with `AnthropicVault` / `OpenAIVault`. The API is identical — envaultx intercepts every message before it leaves your process.
 
 ```python
 import anthropic
-from envault.wrappers import AnthropicVault
+from envaultx.wrappers import AnthropicVault
 
 client = AnthropicVault(
     anthropic_client=anthropic.Anthropic(api_key="..."),
@@ -121,7 +121,7 @@ vault = response._vault
 
 ```python
 import openai
-from envault.wrappers import OpenAIVault
+from envaultx.wrappers import OpenAIVault
 
 client = OpenAIVault(openai_client=openai.OpenAI(api_key="..."))
 # Usage is identical to openai.OpenAI
@@ -129,47 +129,47 @@ client = OpenAIVault(openai_client=openai.OpenAI(api_key="..."))
 
 ### CLI
 
-Pipe any text through envault in a shell script or CI/CD pipeline.
+Pipe any text through envaultx in a shell script or CI/CD pipeline.
 
 ```bash
 # Scan a file and report detections (exits 1 if secrets found)
-envault scan --file config.py
-envault scan --file .env --format json
+envaultx scan --file config.py
+envaultx scan --file .env --format json
 
 # Redact via pipe — safe to feed directly into another tool
-cat config.py | envault redact --stdin | llm-tool --prompt "explain this"
+cat config.py | envaultx redact --stdin | llm-tool --prompt "explain this"
 
 # Save the vault so you can restore later
-envault redact --file document.txt --output safe.txt --vault-out vault.enc --vault-password "$SESSION_KEY"
+envaultx redact --file document.txt --output safe.txt --vault-out vault.enc --vault-password "$SESSION_KEY"
 
 # Restore placeholders in an LLM response
-envault restore --vault vault.enc --vault-password "$SESSION_KEY" --file response.txt
+envaultx restore --vault vault.enc --vault-password "$SESSION_KEY" --file response.txt
 
 # One-way sanitization (no vault written)
-cat user_data.csv | envault redact --stdin --sanitize > safe_data.csv
+cat user_data.csv | envaultx redact --stdin --sanitize > safe_data.csv
 
 # List all built-in detection patterns
-envault patterns
-envault patterns --format json
+envaultx patterns
+envaultx patterns --format json
 ```
 
 **Exit codes:** `0` = clean / success · `1` = secrets detected · `2` = I/O error · `3` = config error · `4` = invalid arguments
 
 ### MCP server
 
-Run envault as an [MCP](https://modelcontextprotocol.io) server so any agent or tool that speaks the Model Context Protocol can call it directly.
+Run envaultx as an [MCP](https://modelcontextprotocol.io) server so any agent or tool that speaks the Model Context Protocol can call it directly.
 
 ```bash
-envault mcp                              # stdio transport (Claude Desktop, default)
-envault mcp --transport http --port 8080 # HTTP transport
+envaultx mcp                              # stdio transport (Claude Desktop, default)
+envaultx mcp --transport http --port 8080 # HTTP transport
 ```
 
 **Claude Desktop config** (`~/Library/Application Support/Claude/claude_desktop_config.json`):
 ```json
 {
   "mcpServers": {
-    "envault": {
-      "command": "envault",
+    "envaultx": {
+      "command": "envaultx",
       "args": ["mcp"]
     }
   }
@@ -191,7 +191,7 @@ Sessions are in-memory only and expire after 1 hour of inactivity.
 
 ---
 
-## What envault detects
+## What envaultx detects
 
 ### Layer 1 — Pattern matching (always on)
 
@@ -259,7 +259,7 @@ LLM response:     "The key [OPENAI_KEY_1] has been rotated."
 Restored:         "The key sk-proj-abc123... has been rotated."
 ```
 
-- The vault lives only in memory — nothing is ever written to disk by envault itself
+- The vault lives only in memory — nothing is ever written to disk by envaultx itself
 - The same secret value always maps to the same placeholder within a session (deduplication)
 - Placeholders are typed and numbered: `[OPENAI_KEY_1]`, `[EMAIL_3]`, `[DB_PASSWORD_1]`
 - For cross-process use, serialize the vault to encrypted bytes (requires `envaultx[crypto]`):
@@ -269,7 +269,7 @@ Restored:         "The key sk-proj-abc123... has been rotated."
 encrypted = vault.to_encrypted_bytes(password="session-secret")
 
 # Decrypt in another process
-from envault import Vault
+from envaultx import Vault
 restored_vault = Vault.from_encrypted_bytes(encrypted, password="session-secret")
 ```
 
@@ -277,13 +277,13 @@ restored_vault = Vault.from_encrypted_bytes(encrypted, password="session-secret"
 
 ## Configuration
 
-envault looks for config in this order:
+envaultx looks for config in this order:
 
 1. `ENVAULT_CONFIG` environment variable (path to a TOML file)
-2. `.envault.toml` in the current directory
-3. `~/.config/envault/config.toml`
+2. `.envaultx.toml` in the current directory
+3. `~/.config/envaultx/config.toml`
 
-Copy `.envault.toml.example` to `.envault.toml` to get started:
+Copy `.envaultx.toml.example` to `.envaultx.toml` to get started:
 
 ```toml
 [detection]
@@ -313,13 +313,13 @@ All values can be overridden with environment variables:
 
 ---
 
-## What envault is not
+## What envaultx is not
 
-- **Not a security gateway** — envault redacts and reports; it does not block requests
+- **Not a security gateway** — envaultx redacts and reports; it does not block requests
 - **Not persistent storage** — the vault is session-scoped and in-memory only
 - **Not a secrets manager** — use Vault, AWS Secrets Manager, etc. for production secret storage
 - **Not a git scanner** — use [TruffleHog](https://github.com/trufflesecurity/trufflehog) or [gitleaks](https://github.com/gitleaks/gitleaks) for history scanning
-- **Not a network proxy** — envault operates on text in your process, not at the network layer
+- **Not a network proxy** — envaultx operates on text in your process, not at the network layer
 
 ---
 
